@@ -1,10 +1,11 @@
 import { IProduct } from "../../types";
+import { IEvents } from "../base/Events";
 
 export class Catalog {
   private _productsList: IProduct[];
   private _selectedProduct: IProduct | null = null;
 
-  constructor(productsList: IProduct[] = []) {
+  constructor(private _eventBroker: IEvents, productsList: IProduct[] = []) {
     this._productsList = productsList;
   }
 
@@ -14,6 +15,7 @@ export class Catalog {
 
   set products(productsList: IProduct[]) {
     this._productsList = productsList;
+    this._eventBroker.emit("catalog:loaded");
   }
 
   get selectedProduct(): IProduct | null {

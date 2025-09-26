@@ -7,38 +7,68 @@ export interface IApi {
         data: object,
         method?: ApiPostMethods
     ): Promise<T>;
-    }
+}
 
-    export interface IProduct {
+export interface IProduct {
     id: string;
     title: string;
     description: string;
     image: string;
     category: string;
     price: number | null;
-    }
-    export interface ICustomer {
+}
+export interface ICustomer {
     payment: "cash" | "card" | "";
     email: string;
     phone: string;
     address: string;
-    }
+}
 
-    export interface IProductsAPIResponse {
+export interface IProductsAPIResponse {
     total: number;
     items: IProduct[];
-    }
+}
 
-    export interface IOrder extends ICustomer {
+export interface IOrder extends ICustomer {
     total: number;
     items: string[];
-    }
+}
 
-    export interface IOrderResult {
+export interface IOrderResult {
     id: string;
     total: number;
-    }
+}
 
-    export interface IOrderFailed {
+export interface IOrderFailed {
     error: string;
+}
+export interface IModal {
+  content: HTMLElement;
+}
+
+export interface IHeader {
+  counter: number;
+}
+
+export interface IGallery {
+  items: HTMLElement[];
+}
+
+export interface IBasket {
+  items: HTMLElement[];
+  total: number;
+}
+
+export interface IBaseCard {
+  title: string;
+  price: number | null;
+  id: string;
+}
+
+export interface ICard {
+  image: string;
+  title: string;
+  category: string;
+  price: number | null;
+  id: string;
 }

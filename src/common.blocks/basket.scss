@@ -10,6 +10,7 @@
     padding: 0;
     margin: 0;
     flex-grow: 1;
+    list-style: none;
   }
 
   &__item {
@@ -35,5 +36,11 @@
       opacity: 0.5;
       margin-left: 4rem;
     }
+  }
+  
+  &__empty {
+    color: white;
+    opacity: 0.4;
+    padding: 1.5rem 0;
   }
 }
