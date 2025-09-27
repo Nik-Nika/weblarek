@@ -41,6 +41,9 @@ const tplOrder = ensureElement<HTMLTemplateElement>("#order");
 const tplContacts = ensureElement<HTMLTemplateElement>("#contacts");
 const tplSuccess = ensureElement<HTMLTemplateElement>("#success");
 
+const FormOrder = modalContainer.querySelector('form[name="order"]');
+const FormContacts = modalContainer.querySelector('form[name="contacts"]')
+
 const productsCatalog = new Catalog(eventBroker);
 const cart = new Card(eventBroker);
 const buyer = new Customer(eventBroker);
@@ -135,17 +138,17 @@ function openContactsForm() {
 }
 
 function validateAndUpdateActiveForm() {
-  const isOrderFormOpen = !!modalContainer.querySelector('form[name="order"]');
-  const isContactsFormOpen = !!modalContainer.querySelector('form[name="contacts"]');
+  const isOrderFormOpen = !!FormOrder;
+  const isContactsFormOpen = !!FormContacts;
   if (isOrderFormOpen) {
-    const orderFormEl = modalContainer.querySelector('form[name="order"]')!;
+    const orderFormEl = FormOrder!;
     const orderForm = new OrderDataForm(orderFormEl as unknown as HTMLElement, eventBroker);
     const v = buyer.getOrderValidation();
     orderForm.valid = v.valid;
     orderForm.errors = v.error;
   }
   if (isContactsFormOpen) {
-    const contactsFormEl = modalContainer.querySelector('form[name="contacts"]')!;
+    const contactsFormEl = FormContacts!;
     const contactsForm = new ContactDataForm(contactsFormEl as unknown as HTMLElement, eventBroker);
     const v = buyer.getContactsValidation();
     contactsForm.valid = v.valid;
