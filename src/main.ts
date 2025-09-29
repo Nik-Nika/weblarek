@@ -41,8 +41,11 @@ const tplOrder = ensureElement<HTMLTemplateElement>("#order");
 const tplContacts = ensureElement<HTMLTemplateElement>("#contacts");
 const tplSuccess = ensureElement<HTMLTemplateElement>("#success");
 
-const FormOrder = modalContainer.querySelector('form[name="order"]');
-const FormContacts = modalContainer.querySelector('form[name="contacts"]')
+// const FormOrder = modalContainer.querySelector('form[name="order"]');
+// const FormContacts = modalContainer.querySelector('form[name="contacts"]')
+let isOrderOpen = false;
+let isContactsOpen = false;
+
 
 const productsCatalog = new Catalog(eventBroker);
 const cart = new Card(eventBroker);
@@ -125,6 +128,7 @@ function openOrderForm() {
   orderContent.errors = v.error;
   modalView.content = orderContent.render();
   modalView.open();
+  isOrderOpen = true;
 }
 
 function openContactsForm() {
@@ -135,26 +139,28 @@ function openContactsForm() {
   contactsContent.errors = v.error;
   modalView.content = contactsContent.render();
   modalView.open();
+  isOrderOpen = false; 
+  isContactsOpen = true;
 }
 
-function validateAndUpdateActiveForm() {
-  const isOrderFormOpen = !!FormOrder;
-  const isContactsFormOpen = !!FormContacts;
-  if (isOrderFormOpen) {
-    const orderFormEl = FormOrder!;
-    const orderForm = new OrderDataForm(orderFormEl as unknown as HTMLElement, eventBroker);
-    const v = buyer.getOrderValidation();
-    orderForm.valid = v.valid;
-    orderForm.errors = v.error;
-  }
-  if (isContactsFormOpen) {
-    const contactsFormEl = FormContacts!;
-    const contactsForm = new ContactDataForm(contactsFormEl as unknown as HTMLElement, eventBroker);
-    const v = buyer.getContactsValidation();
-    contactsForm.valid = v.valid;
-    contactsForm.errors = v.error;
-  }
-}
+// function validateAndUpdateActiveForm() {
+//   // const isOrderFormOpen = !!FormOrder;
+//   const isContactsFormOpen = !!FormContacts;
+//   if (isOrderFormOpen) {
+//     const orderFormEl = FormOrder!;
+//     const orderForm = new OrderDataForm(orderFormEl as unknown as HTMLElement, eventBroker);
+//     const v = buyer.getOrderValidation();
+//     orderForm.valid = v.valid;
+//     orderForm.errors = v.error;
+//   }
+//   if (isContactsFormOpen) {
+//     // const contactsFormEl = FormContacts!;
+//     const contactsForm = new ContactDataForm(contactsFormEl as unknown as HTMLElement, eventBroker);
+//     const v = buyer.getContactsValidation();
+//     contactsForm.valid = v.valid;
+//     contactsForm.errors = v.error;
+//   }
+// }
 
 function showSuccessModal() {
   const successTpl = cloneTemplate<HTMLElement>(tplSuccess);
@@ -279,9 +285,9 @@ eventBroker.on("order:phone:changed", (data: { phone: string }) => {
   buyer.phone = data.phone;
 });
 
-eventBroker.on("order:form:changed", () => {
-  validateAndUpdateActiveForm();
-});
+// eventBroker.on("order:form:changed", () => {
+//   validateAndUpdateActiveForm();
+// });
 
 eventBroker.on("order:submit", async () => {
   const validity = buyer.isValid();
@@ -309,4 +315,6 @@ eventBroker.on("modal:open", () => {
 eventBroker.on("modal:close", () => {
   pageView.unlock();
   modalView.close();
+  isOrderOpen = false; 
+  isContactsOpen = true;
 });
